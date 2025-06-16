@@ -13,22 +13,22 @@ st.title("🚀 Early Adopter Outreach Strategist")
 with st.form("startup_form"):
     startup_name = st.text_input("Startup Name")
     description = st.text_area("What does your startup do?")
-    target_persona = st.text_input("Describe your target user persona")
-    platforms = st.multiselect("Preferred Outreach Platforms", ["Email", "Twitter DM", "Reddit Post", "IndieHackers", "LinkedIn"])
+    persona = st.text_input("Target Persona", value="Non-technical founders")
+    platforms = st.multiselect("Target Platforms", ["Reddit", "Twitter", "IndieHackers"])
     submitted = st.form_submit_button("Generate Strategy")
 
 if submitted:
     with st.spinner("🎯 Mapping persona to communities..."):
-        communities = find_communities(target_persona)
+        communities = find_communities(persona)
 
     with st.spinner("🧠 Generating outreach messages with Mistral 7B..."):
-        outreach = generate_outreach_templates(startup_name, description, target_persona, platforms)
+        outreach = generate_outreach_templates(startup_name, description, persona, platforms)
 
     with st.spinner("⏱ Calculating best outreach timing..."):
-        timing = suggest_outreach_timing(platforms)
+        timing = suggest_outreach_timing(persona, platforms)
 
     with st.spinner("📣 Recommending feedback strategies..."):
-        feedback = generate_feedback_methods(target_persona)
+        feedback = generate_feedback_methods(persona)
 
     # --- Output Section ---
     st.subheader("🌐 Suggested Communities")
@@ -40,7 +40,7 @@ if submitted:
         st.code(msg, language="markdown")
 
     st.subheader("📅 Outreach Timing Tips")
-    st.write(timing)
+    st.json(timing)
 
     st.subheader("🧪 Feedback Collection Methods")
     st.write(feedback)
